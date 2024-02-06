@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Days Since Last Issue in Group VI</title>
+<style>
+  #timer {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="timer">Loading...</div>
+<button id="resetButton">Reset Timer</button>
+
+<script>
+// Function to update the timer display
+function updateTimer() {
+  var now = new Date().getTime();
+  var difference = now - lastIssueTime;
+  
+  // Calculate days, hours, minutes, and seconds
+  var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+  
+  document.getElementById("timer").innerHTML = "Days Since Last Issue in Group VI: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+}
+
+// Function to handle the reset button click
+document.getElementById("resetButton").addEventListener("click", function() {
+  lastIssueTime = new Date().getTime(); // Reset the last issue time
+  localStorage.setItem("lastIssueTime", lastIssueTime); // Save to local storage
+  updateTimer(); // Update the timer display
+});
+
+// Initialize lastIssueTime from local storage or current time if not available
+var lastIssueTime = localStorage.getItem("lastIssueTime");
+if (!lastIssueTime) {
+  lastIssueTime = new Date().getTime();
+  localStorage.setItem("lastIssueTime", lastIssueTime);
+} else {
+  lastIssueTime = parseInt(lastIssueTime);
+}
+
+// Update the timer display initially
+updateTimer();
+
+// Update the timer every second
+setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>
